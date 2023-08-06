@@ -1,0 +1,32 @@
+Python - managed to optimize my initial brute force solution that took approx. 10 seconds to complete and got under 2 seconds with this one using a dictionary to memorize lengths of already calculated chains based on their starting points.
+
+def collatz_memo(k, memo_chains):    
+    memo_chains[k] = 1
+    n = k
+    while n > 1:
+        if n % 2 == 0:
+            n //= 2
+        else:
+            n = 3 * n + 1
+        if n in memo_chains:
+            memo_chains[k] += memo_chains[n]
+            return memo_chains
+        else:
+            memo_chains[k] += 1
+    return memo_chains
+
+def get_longest_chain():
+    memo_chains = {}
+    longest_chain = 0
+    i = 3
+
+    while i < 1e6:
+        memo_chains = collatz_memo(i, memo_chains)
+        if memo_chains[i] > longest_chain:
+            longest_chain = memo_chains[i]
+            best_start = i
+        i += 2
+
+    print(best_start)
+
+get_longest_chain()
